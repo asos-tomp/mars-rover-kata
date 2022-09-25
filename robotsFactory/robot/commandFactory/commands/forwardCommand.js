@@ -17,9 +17,9 @@ export const forwardCommand = (state, world) => {
 
   if (wouldBeLost) {
     const scentMarker = `${x} ${y}`;
-    if (world.scentMarker !== scentMarker) {
+    if (!world.scentMarkers.includes(scentMarker)) {
       state.isLost = true;
-      world.scentMarker = scentMarker;
+      world.scentMarkers.push(scentMarker);
     }
 
     return;
