@@ -1,5 +1,5 @@
 export default (input) => {
-  if (input === "0 0\n0 0 N") return "0 0 N";
+  const [, state] = input.split("\n");
 
-  return "0 0 E";
+  return state;
 };
