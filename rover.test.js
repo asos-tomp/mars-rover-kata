@@ -80,6 +80,16 @@ describe("Mars Rover", () => {
           );
         });
       });
+
+      describe("and a forward instruction (F)", () => {
+        const instruction = "F";
+
+        it(`should return the starting location with an indication that the robot is lost`, () => {
+          expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+            `${state} LOST`
+          );
+        });
+      });
     });
   });
 });
