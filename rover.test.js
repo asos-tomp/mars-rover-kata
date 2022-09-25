@@ -32,23 +32,6 @@ describe("Mars Rover", () => {
         });
 
         describe.each`
-          instruction | orientationMap
-          ${"R"}      | ${{ N: "E", E: "S", S: "W", W: "N" }}
-          ${"L"}      | ${{ N: "W", E: "N", S: "E", W: "S" }}
-        `(
-          "and rotation instruction ($instruction)",
-          ({ instruction, orientationMap }) => {
-            const expectedOrientation = orientationMap[orientation];
-
-            it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
-              expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-                `${location} ${expectedOrientation}`
-              );
-            });
-          }
-        );
-
-        describe.each`
           instructions
           ${"R"}
           ${"L"}
@@ -59,7 +42,7 @@ describe("Mars Rover", () => {
           ${"LR"}
           ${"RL"}
           ${"RLR"}
-        `("and instructions $instructions", ({ instructions }) => {
+        `("and instructions ($instructions)", ({ instructions }) => {
           const cardinals = ["N", "E", "S", "W"];
           let orientationIndex = cardinals.indexOf(orientation);
 
@@ -107,7 +90,7 @@ describe("Mars Rover", () => {
         ${"0 2"} | ${"0 2"} | ${"S"}      | ${"0 1"}
         ${"3 0"} | ${"3 0"} | ${"W"}      | ${"2 0"}
       `(
-        "and a world with dimensions ($world), a valid start location ($location) and orientation cardinal ($orientation)",
+        "and a world with top right coordinate of ($world), a valid start location ($location) and orientation cardinal ($orientation)",
         ({ world, location, orientation, expectedLocation }) => {
           const state = `${location} ${orientation}`;
 
@@ -120,7 +103,7 @@ describe("Mars Rover", () => {
       );
     });
 
-    describe("and a world with dimensions (5 3)", () => {
+    describe("and a world with with top right coordinate of (5 3)", () => {
       const world = "5 3";
 
       describe.each`
@@ -163,11 +146,11 @@ describe("Mars Rover", () => {
     const stateDescription = robots
       .map(
         ({ state, instructions }) =>
-          `state ${state} and instructions ${instructions}`
+          `state ${state} and instructions (${instructions})`
       )
       .join(" and ");
 
-    describe(`with ${stateDescription} and a world with dimensions (5 3)`, () => {
+    describe(`with ${stateDescription} and a world with top right coordinate of (5 3)`, () => {
       const world = "5 3";
       const formatRobot = ({ state, instructions }) =>
         `${state}\n${instructions}`;
