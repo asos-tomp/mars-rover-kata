@@ -24,7 +24,9 @@ const process = (orientation, instructions) => {
     return orientation;
   }
   const command = commandFactory(instruction);
-  orientation = command(orientation);
+  if (command) {
+    orientation = command(orientation);
+  }
 
   return process(orientation, remaining);
 };
