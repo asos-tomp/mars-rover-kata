@@ -45,18 +45,18 @@ describe("Mars Rover", () => {
           });
         }
       );
-    });
 
-    describe("and orientation cardinal (N) and two right rotation instructions (RR)", () => {
-      const orientation = "N";
-      const instructions = "RR";
-      const expectedOrientation = "S";
-      const state = `${location} ${orientation}`;
+      describe("and two right rotation instructions (RR)", () => {
+        const instructions = "RR";
+        const orientationMap = { N: "S", E: "W", S: "N", W: "E" };
+        const expectedOrientation = orientationMap[orientation];
+        const state = `${location} ${orientation}`;
 
-      it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
-        expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
-          `${location} ${expectedOrientation}`
-        );
+        it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
+          expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
+            `${location} ${expectedOrientation}`
+          );
+        });
       });
     });
   });
