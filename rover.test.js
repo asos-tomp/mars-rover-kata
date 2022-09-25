@@ -12,71 +12,101 @@ describe("Mars Rover", () => {
   describe("given a single robot ", () => {
     const origin = "0 0";
 
-    describe("with a valid start location (0 0)", () => {
-      const location = `${origin}`;
-
-      describe("and a minimum viable world (single unit size)", () => {
+    describe("and a valid world size", () => {
+      describe("of minimum viable dimension (single unit size)", () => {
         const world = `${origin}`;
 
-        describe.each`
-          orientation
-          ${"N"}
-          ${"E"}
-          ${"S"}
-          ${"W"}
-        `("and orientation cardinal ($orientation)", ({ orientation }) => {
-          const state = `${location} ${orientation}`;
-
-          describe("and no instructions", () => {
-            it(`should return the starting state ${state} unchanged`, () => {
-              expect(rover(`${world}\n${state}`)).toEqual(state);
-            });
-          });
+        describe("with a valid start location (0 0)", () => {
+          const location = `${origin}`;
 
           describe.each`
-            instructions
-            ${"R"}
-            ${"L"}
-            ${"RR"}
-            ${"LL"}
-            ${"RRR"}
-            ${"LLL"}
-            ${"LR"}
-            ${"RL"}
-            ${"RLR"}
-          `("and rotation instructions ($instructions)", ({ instructions }) => {
-            const cardinals = ["N", "E", "S", "W"];
-            let orientationIndex = cardinals.indexOf(orientation);
+            orientation
+            ${"N"}
+            ${"E"}
+            ${"S"}
+            ${"W"}
+          `("and orientation cardinal ($orientation)", ({ orientation }) => {
+            const state = `${location} ${orientation}`;
 
-            instructions.split("").forEach((instruction) => {
-              const instructionDeltaMap = {
-                L: -1,
-                R: 1,
-              };
-              const mod = (n, m) => ((n % m) + m) % m;
-              orientationIndex = mod(
-                orientationIndex + instructionDeltaMap[instruction],
-                4
-              );
-            });
+            describe("and a forward instruction (F)", () => {
+              const instruction = "F";
 
-            const expectedOrientation = cardinals[orientationIndex];
-
-            it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
-              expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
-                `${location} ${expectedOrientation}`
-              );
+              it(`should return the starting location with an indication that the robot is lost`, () => {
+                expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+                  `${state} LOST`
+                );
+              });
             });
           });
+        });
+      });
 
-          describe("and a forward instruction (F)", () => {
-            const instruction = "F";
+      describe.each`
+        right | top
+        ${50} | ${0}
+        ${0}  | ${50}
+      `("of right top coordinate ($right $top)", ({ right, top }) => {
+        const world = `${right} ${top}`;
 
-            it(`should return the starting location with an indication that the robot is lost`, () => {
-              expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-                `${state} LOST`
-              );
+        describe.each`
+          location
+          ${"0 0"}
+          ${`${right} 0`}
+          ${`0 ${top}`}
+        `("with a valid start location ($location)", ({ location }) => {
+          describe.each`
+            orientation
+            ${"N"}
+            ${"E"}
+            ${"S"}
+            ${"W"}
+          `("and orientation cardinal ($orientation)", ({ orientation }) => {
+            const state = `${location} ${orientation}`;
+
+            describe("and no instructions", () => {
+              it(`should return the starting state ${state} unchanged`, () => {
+                expect(rover(`${world}\n${state}`)).toEqual(state);
+              });
             });
+
+            describe.each`
+              instructions
+              ${"R"}
+              ${"L"}
+              ${"RR"}
+              ${"LL"}
+              ${"RRR"}
+              ${"LLL"}
+              ${"LR"}
+              ${"RL"}
+              ${"RLR"}
+            `(
+              "and rotation instructions ($instructions)",
+              ({ instructions }) => {
+                const cardinals = ["N", "E", "S", "W"];
+                let orientationIndex = cardinals.indexOf(orientation);
+
+                instructions.split("").forEach((instruction) => {
+                  const instructionDeltaMap = {
+                    L: -1,
+                    R: 1,
+                  };
+                  const mod = (n, m) => ((n % m) + m) % m;
+                  orientationIndex = mod(
+                    orientationIndex + instructionDeltaMap[instruction],
+                    4
+                  );
+                });
+
+                const expectedOrientation = cardinals[orientationIndex];
+
+                it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
+                  expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
+                    `${location} ${expectedOrientation}`
+                  );
+                });
+              }
+            );
           });
         });
       });
@@ -93,7 +123,7 @@ describe("Mars Rover", () => {
         "and $valid world right top coordinate ($right $top)",
         ({ right, top, valid }) => {
           const world = `${right} ${top}`;
-          const state = `${location} N`;
+          const state = "0 0 N";
           const isValid = valid === "a valid";
 
           const expectation = isValid ? "not " : "";
