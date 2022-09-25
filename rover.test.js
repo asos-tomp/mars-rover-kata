@@ -58,6 +58,19 @@ describe("Mars Rover", () => {
           );
         });
       });
+
+      describe("and two right rotation instructions (LL)", () => {
+        const instructions = "LL";
+        const orientationMap = { N: "S", E: "W", S: "N", W: "E" };
+        const expectedOrientation = orientationMap[orientation];
+        const state = `${location} ${orientation}`;
+
+        it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
+          expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
+            `${location} ${expectedOrientation}`
+          );
+        });
+      });
     });
   });
 });
