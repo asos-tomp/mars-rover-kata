@@ -9,7 +9,7 @@ export default (input) => {
 
     const startOrientation = state.slice(-1);
     const startOrientationIndex = cardinals.indexOf(startOrientation);
-    const rotations = instructions === "RR" ? 2 : 1;
+    const rotations = ["RR", "LL"].includes(instructions) ? 2 : 1;
     const newOrientation =
       cardinals[(startOrientationIndex + rotations) % cardinals.length];
 
