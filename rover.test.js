@@ -10,6 +10,10 @@ describe("Mars Rover", () => {
   });
 
   describe("given a single robot, a minimum viable world (single unit size), a valid start location (0 0)", () => {
+    const origin = "0 0";
+    const world = `${origin}`;
+    const location = `${origin}`;
+
     describe.each`
       orientation
       ${"N"}
@@ -17,9 +21,6 @@ describe("Mars Rover", () => {
       ${"S"}
       ${"W"}
     `("and orientation cardinal ($orientation)", ({ orientation }) => {
-      const origin = "0 0";
-      const world = `${origin}`;
-      const location = `${origin}`;
       const state = `${location} ${orientation}`;
 
       it("should return the starting state unchanged", () => {
@@ -27,11 +28,8 @@ describe("Mars Rover", () => {
       });
     });
 
-    describe("given a single robot, a minimum viable world (single unit size), a valid start location (0 0) and orientation cardinal (N) and a right rotation instruction", () => {
+    describe("and orientation cardinal (N), and a right rotation instruction", () => {
       const orientation = "N";
-      const origin = "0 0";
-      const world = `${origin}`;
-      const location = `${origin}`;
       const state = `${location} ${orientation}`;
       const instruction = "R";
 
