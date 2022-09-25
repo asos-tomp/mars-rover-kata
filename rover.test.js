@@ -98,65 +98,24 @@ describe("Mars Rover", () => {
     describe("and a forward instruction", () => {
       const instruction = "F";
 
-      describe("and a world with two units height and one width", () => {
-        const world = "0 1";
-
-        describe("and a valid start location (0 0) orientation cardinal (N)", () => {
-          const orientation = "N";
-          const location = "0 0";
+      describe.each`
+        world    | location | orientation | expectedLocation
+        ${"0 1"} | ${"0 0"} | ${"N"}      | ${"0 1"}
+        ${"0 1"} | ${"0 1"} | ${"S"}      | ${"0 0"}
+        ${"1 0"} | ${"0 0"} | ${"E"}      | ${"1 0"}
+        ${"1 0"} | ${"1 0"} | ${"W"}      | ${"0 0"}
+      `(
+        "and a world with dimensions ($world), a valid start location ($location) and orientation cardinal ($orientation)",
+        ({ world, location, orientation, expectedLocation }) => {
           const state = `${location} ${orientation}`;
-          const expectedLocation = "0 1";
 
           it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
             expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
               `${expectedLocation} ${orientation}`
             );
           });
-        });
-
-        describe("and a valid start location (0 1) orientation cardinal (S)", () => {
-          const orientation = "S";
-          const location = "0 1";
-          const state = `${location} ${orientation}`;
-          const expectedLocation = "0 0";
-
-          it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
-            expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-              `${expectedLocation} ${orientation}`
-            );
-          });
-        });
-      });
-
-      describe("and a world with two units width and one height", () => {
-        const world = "1 0";
-
-        describe("and a valid start location (0 0) orientation cardinal (E)", () => {
-          const orientation = "E";
-          const location = "0 0";
-          const state = `${location} ${orientation}`;
-          const expectedLocation = "1 0";
-
-          it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
-            expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-              `${expectedLocation} ${orientation}`
-            );
-          });
-        });
-
-        describe("and a valid start location (1 0) orientation cardinal (W)", () => {
-          const orientation = "W";
-          const location = "1 0";
-          const state = `${location} ${orientation}`;
-          const expectedLocation = "0 0";
-
-          it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
-            expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-              `${expectedLocation} ${orientation}`
-            );
-          });
-        });
-      });
+        }
+      );
     });
   });
 });
