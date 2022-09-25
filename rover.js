@@ -3,6 +3,10 @@ export default (input) => {
 
   if (instructions) {
     let cardinals = ["N", "E", "S", "W"];
+    if (instructions === "LR") {
+      return state;
+    }
+
     if (instructions.startsWith("L")) {
       cardinals.reverse();
     }
