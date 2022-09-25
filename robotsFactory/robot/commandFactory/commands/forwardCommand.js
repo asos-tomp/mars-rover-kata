@@ -16,10 +16,12 @@ export const forwardCommand = (state, world) => {
     newX < 0 || newY < 0 || newX > world.right || newY > world.top;
 
   if (wouldBeLost) {
-    if (!world.isLost || x === 0 || y === 0) {
+    const scentMarker = `${x} ${y}`;
+    if (world.scentMarker !== scentMarker) {
       state.isLost = true;
+      world.scentMarker = scentMarker;
     }
-    world.isLost = true;
+
     return;
   }
 
