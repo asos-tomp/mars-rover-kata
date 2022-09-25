@@ -66,8 +66,8 @@ describe("Mars Rover", () => {
             L: -1,
             R: 1,
           };
-          const mod = (n, m) => ((n % m) + m) % m;
-          orientationIndex = mod(
+          const modulo = (n, m) => ((n % m) + m) % m;
+          orientationIndex = modulo(
             orientationIndex + instructionDeltaMap[instruction],
             4
           );
