@@ -47,40 +47,38 @@ describe("Mars Rover", () => {
       );
 
       describe.each`
-        instruction | rotations | orientationMap
-        ${"R"}      | ${1}      | ${{ N: "E", E: "S", S: "W", W: "N" }}
-        ${"L"}      | ${1}      | ${{ N: "W", E: "N", S: "E", W: "S" }}
-        ${"R"}      | ${2}      | ${{ N: "S", E: "W", S: "N", W: "E" }}
-        ${"L"}      | ${2}      | ${{ N: "S", E: "W", S: "N", W: "E" }}
-        ${"R"}      | ${3}      | ${{ N: "W", E: "N", S: "E", W: "S" }}
-        ${"L"}      | ${3}      | ${{ N: "E", E: "S", S: "W", W: "N" }}
-      `(
-        "and $rotations $instruction rotation instruction(s)",
-        ({ instruction, rotations, orientationMap }) => {
-          const instructions = instruction.repeat(rotations);
-          const expectedOrientation = orientationMap[orientation];
-          const state = `${location} ${orientation}`;
-
-          it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
-            expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
-              `${location} ${expectedOrientation}`
-            );
-          });
-        }
-      );
-
-      describe.each`
         instructions
+        ${"R"}
+        ${"L"}
+        ${"RR"}
+        ${"LL"}
+        ${"RRR"}
+        ${"LLL"}
         ${"LR"}
         ${"RL"}
-      `(
-        "and one left and one right rotation instruction ($instructions)",
-        ({ instructions }) => {
-          it("should return the starting state unchanged", () => {
-            expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(state);
-          });
-        }
-      );
+      `("and instructions $instructions", ({ instructions }) => {
+        const cardinals = ["N", "E", "S", "W"];
+        let orientationIndex = cardinals.indexOf(orientation);
+
+        instructions.split("").forEach((instruction) => {
+          const instructionDeltaMap = {
+            L: -1,
+            R: 1,
+          };
+          const mod = (n, m) => ((n % m) + m) % m;
+          orientationIndex = mod(
+            orientationIndex + instructionDeltaMap[instruction],
+            4
+          );
+        });
+
+        const expectedOrientation = cardinals[orientationIndex];
+        it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
+          expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
+            `${location} ${expectedOrientation}`
+          );
+        });
+      });
     });
   });
 });
