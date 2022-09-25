@@ -23,32 +23,26 @@ describe("Mars Rover", () => {
     `("and orientation cardinal ($orientation)", ({ orientation }) => {
       const state = `${location} ${orientation}`;
 
-      it("should return the starting state unchanged", () => {
-        expect(rover(`${world}\n${state}`)).toEqual(state);
+      describe("and no instructions", () => {
+        it(`should return the starting state ${state} unchanged`, () => {
+          expect(rover(`${world}\n${state}`)).toEqual(state);
+        });
       });
-    });
 
-    describe("and orientation cardinal (N), and a right rotation instruction", () => {
-      const orientation = "N";
-      const state = `${location} ${orientation}`;
-      const instruction = "R";
+      describe("and a right rotation instruction", () => {
+        const instruction = "R";
+        const expectedOrientation = {
+          N: "E",
+          E: "S",
+          S: "W",
+          W: "N",
+        }[orientation];
 
-      it(`should return the location with an updated orientation (E)`, () => {
-        expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-          `${location} E`
-        );
-      });
-    });
-
-    describe("and orientation cardinal (E), and a right rotation instruction", () => {
-      const orientation = "E";
-      const state = `${location} ${orientation}`;
-      const instruction = "R";
-
-      it(`should return the location with an updated orientation (S)`, () => {
-        expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-          `${location} S`
-        );
+        it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
+          expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+            `${location} ${expectedOrientation}`
+          );
+        });
       });
     });
   });
