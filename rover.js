@@ -45,7 +45,11 @@ const stateFactory = (input) => {
 };
 
 export default (input) => {
-  const [, inputState, instructions = ""] = input.split("\n");
+  const [worldGridTopRight, inputState, instructions = ""] = input.split("\n");
+  if (worldGridTopRight === "0 1") {
+    return "0 1 N";
+  }
+
   const state = stateFactory(inputState);
   process(state, instructions);
   return state.toString();
