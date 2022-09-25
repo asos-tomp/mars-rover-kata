@@ -97,13 +97,13 @@ describe("Mars Rover", () => {
 
     describe("and a world with two units height and one width and a forward instruction", () => {
       const world = "0 1";
+      const instruction = "F";
 
       describe("and a valid start location (0 0) orientation cardinal (N)", () => {
         const orientation = "N";
         const location = "0 0";
         const state = `${location} ${orientation}`;
         const expectedLocation = "0 1";
-        const instruction = "F";
 
         it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
           expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
@@ -117,7 +117,6 @@ describe("Mars Rover", () => {
         const location = "0 1";
         const state = `${location} ${orientation}`;
         const expectedLocation = "0 0";
-        const instruction = "F";
 
         it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
           expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
