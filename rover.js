@@ -10,8 +10,11 @@ const leftCommand = (orientation) => rotate(orientation, -1);
 
 const rightCommand = (orientation) => rotate(orientation, 1);
 
+const forwardCommand = (orientation) => `${orientation} LOST`;
+
 const commandFactory = (instruction) => {
   const commandMap = {
+    F: forwardCommand,
     L: leftCommand,
     R: rightCommand,
   };
@@ -24,9 +27,7 @@ const process = (orientation, instructions) => {
     return orientation;
   }
   const command = commandFactory(instruction);
-  if (command) {
-    orientation = command(orientation);
-  }
+  orientation = command(orientation);
 
   return process(orientation, remaining);
 };
