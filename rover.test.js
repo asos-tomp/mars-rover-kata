@@ -139,4 +139,31 @@ describe("Mars Rover", () => {
       );
     });
   });
+
+  describe("given multiple robots", () => {
+    const robots = [
+      { state: "1 1 E", instructions: "RFRFRFRF" },
+      { state: "3 2 N", instructions: "FRRFLLFFRRFLL" },
+    ];
+    const expectations = ["1 1 E", "3 3 N LOST"];
+    const stateDescription = robots
+      .map(
+        ({ state, instructions }) =>
+          `state ${state} and instructions ${instructions}`
+      )
+      .join(" and ");
+
+    describe(`with ${stateDescription} and a world with dimensions (5 3)`, () => {
+      const world = "5 3";
+      const formatRobot = ({ state, instructions }) =>
+        `${state}\n${instructions}`;
+      const input = `${world}\n${robots.map(formatRobot).join("\n \n")}`;
+
+      it(`should return the expected locations (${expectations.join(
+        " and "
+      )})`, () => {
+        expect(rover(input)).toEqual(expectations.join("\n"));
+      });
+    });
+  });
 });
