@@ -82,26 +82,33 @@ describe("Mars Rover", () => {
       });
 
       describe.each`
-        right | isValid
-        ${51} | ${false}
-        ${50} | ${true}
-        ${-1} | ${false}
-      `("and a world right coordinate ($right)", ({ right, isValid }) => {
-        const world = `${right} 0`;
-        const state = `${location} N`;
+        right | top   | valid
+        ${51} | ${0}  | ${"an invalid"}
+        ${50} | ${0}  | ${"a valid"}
+        ${-1} | ${0}  | ${"an invalid"}
+        ${0}  | ${51} | ${"an invalid"}
+        ${0}  | ${50} | ${"a valid"}
+        ${0}  | ${-1} | ${"an invalid"}
+      `(
+        "and $valid world right top coordinate ($right $top)",
+        ({ right, top, valid }) => {
+          const world = `${right} ${top}`;
+          const state = `${location} N`;
+          const isValid = valid === "a valid";
 
-        const expectation = isValid ? "not " : "";
+          const expectation = isValid ? "not " : "";
 
-        it(`should ${expectation}throw an exception indicating that the coordinate is outside of accepted bounds`, () => {
-          let expectation = expect(() => rover(`${world}\n${state}`));
-          if (isValid) {
-            expectation = expectation.not;
-          }
-          expectation.toThrow(
-            `invalid world right coordinate ${right} received`
-          );
-        });
-      });
+          it(`should ${expectation}throw an exception indicating that the coordinate is outside of accepted bounds`, () => {
+            let expectation = expect(() => rover(`${world}\n${state}`));
+            if (isValid) {
+              expectation = expectation.not;
+            }
+            expectation.toThrow(
+              `invalid world right top coordinate (${right} ${top}) received`
+            );
+          });
+        }
+      );
 
       describe("and a world with with top right coordinate of (5 3)", () => {
         const world = "5 3";
