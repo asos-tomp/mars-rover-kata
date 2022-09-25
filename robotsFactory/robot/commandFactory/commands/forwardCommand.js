@@ -16,7 +16,7 @@ export const forwardCommand = (state, world) => {
     newX < 0 || newY < 0 || newX > world.right || newY > world.top;
 
   if (wouldBeLost) {
-    if (!world.isLost || x === 0) {
+    if (!world.isLost || x === 0 || y === 0) {
       state.isLost = true;
     }
     world.isLost = true;
