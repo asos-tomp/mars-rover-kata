@@ -39,5 +39,17 @@ describe("Mars Rover", () => {
         );
       });
     });
+
+    describe("and orientation cardinal (E), and a right rotation instruction", () => {
+      const orientation = "E";
+      const state = `${location} ${orientation}`;
+      const instruction = "R";
+
+      it(`should return the location with an updated orientation (S)`, () => {
+        expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+          `${location} S`
+        );
+      });
+    });
   });
 });
