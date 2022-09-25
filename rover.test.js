@@ -95,33 +95,66 @@ describe("Mars Rover", () => {
       });
     });
 
-    describe("and a world with two units height and one width and a forward instruction", () => {
-      const world = "0 1";
+    describe("and a forward instruction", () => {
       const instruction = "F";
 
-      describe("and a valid start location (0 0) orientation cardinal (N)", () => {
-        const orientation = "N";
-        const location = "0 0";
-        const state = `${location} ${orientation}`;
-        const expectedLocation = "0 1";
+      describe("and a world with two units height and one width", () => {
+        const world = "0 1";
 
-        it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
-          expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-            `${expectedLocation} ${orientation}`
-          );
+        describe("and a valid start location (0 0) orientation cardinal (N)", () => {
+          const orientation = "N";
+          const location = "0 0";
+          const state = `${location} ${orientation}`;
+          const expectedLocation = "0 1";
+
+          it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
+            expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+              `${expectedLocation} ${orientation}`
+            );
+          });
+        });
+
+        describe("and a valid start location (0 1) orientation cardinal (S)", () => {
+          const orientation = "S";
+          const location = "0 1";
+          const state = `${location} ${orientation}`;
+          const expectedLocation = "0 0";
+
+          it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
+            expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+              `${expectedLocation} ${orientation}`
+            );
+          });
         });
       });
 
-      describe("and a valid start location (0 1) orientation cardinal (S)", () => {
-        const orientation = "S";
-        const location = "0 1";
-        const state = `${location} ${orientation}`;
-        const expectedLocation = "0 0";
+      describe("and a world with two units width and one height", () => {
+        const world = "1 0";
 
-        it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
-          expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-            `${expectedLocation} ${orientation}`
-          );
+        describe("and a valid start location (0 0) orientation cardinal (E)", () => {
+          const orientation = "E";
+          const location = "0 0";
+          const state = `${location} ${orientation}`;
+          const expectedLocation = "1 0";
+
+          it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
+            expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+              `${expectedLocation} ${orientation}`
+            );
+          });
+        });
+
+        describe("and a valid start location (1 0) orientation cardinal (W)", () => {
+          const orientation = "W";
+          const location = "1 0";
+          const state = `${location} ${orientation}`;
+          const expectedLocation = "0 0";
+
+          it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
+            expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+              `${expectedLocation} ${orientation}`
+            );
+          });
         });
       });
     });
