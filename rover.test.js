@@ -69,13 +69,18 @@ describe("Mars Rover", () => {
         }
       );
 
-      describe("and one left and one right rotation instruction (LR)", () => {
-        const instructions = "LR";
-
-        it("should return the starting state unchanged", () => {
-          expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(state);
-        });
-      });
+      describe.each`
+        instructions
+        ${"LR"}
+        ${"RL"}
+      `(
+        "and one left and one right rotation instruction ($instructions)",
+        ({ instructions }) => {
+          it("should return the starting state unchanged", () => {
+            expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(state);
+          });
+        }
+      );
     });
   });
 });
