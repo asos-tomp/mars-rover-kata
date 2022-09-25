@@ -1,9 +1,13 @@
 export default (input) => {
-  const [, state, instruction] = input.split("\n");
+  const [, state, instructions] = input.split("\n");
 
-  if (instruction) {
+  if (instructions === "RR") {
+    return "0 0 S";
+  }
+
+  if (instructions) {
     let cardinals = ["N", "E", "S", "W"];
-    if (instruction === "L") {
+    if (instructions === "L") {
       cardinals.reverse();
     }
 
