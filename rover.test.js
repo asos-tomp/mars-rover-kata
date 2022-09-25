@@ -82,12 +82,12 @@ describe("Mars Rover", () => {
       });
 
       describe.each`
-        width | isValid
+        right | isValid
         ${51} | ${false}
         ${50} | ${true}
         ${-1} | ${false}
-      `("and a world width ($width)", ({ width, isValid }) => {
-        const world = `${width} 0`;
+      `("and a world right coordinate ($right)", ({ right, isValid }) => {
+        const world = `${right} 0`;
         const state = `${location} N`;
 
         const expectation = isValid ? "not " : "";
@@ -97,7 +97,9 @@ describe("Mars Rover", () => {
           if (isValid) {
             expectation = expectation.not;
           }
-          expectation.toThrow(`invalid world width ${width} received`);
+          expectation.toThrow(
+            `invalid world right coordinate ${right} received`
+          );
         });
       });
 
