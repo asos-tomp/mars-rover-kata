@@ -9,12 +9,13 @@ describe("Mars Rover", () => {
     expect(rover).toBeInstanceOf(Function);
   });
 
-  describe("given a single robot with a valid start location (0 0)", () => {
+  describe("given a single robot ", () => {
     const origin = "0 0";
-    const location = `${origin}`;
 
-    describe("and a minimum viable world (single unit size)", () => {
+    describe("with a valid start location (0 0) and a minimum viable world (single unit size)", () => {
+      const location = `${origin}`;
       const world = `${origin}`;
+
       describe.each`
         orientation
         ${"N"}
@@ -94,16 +95,35 @@ describe("Mars Rover", () => {
       });
     });
 
-    describe("and a world with two units height and one width and orientation cardinal (N) and a forward instruction", () => {
+    describe("and a world with two units height and one width and a forward instruction", () => {
       const world = "0 1";
-      const orientation = "N";
-      const state = `${location} ${orientation}`;
-      const expectedLocation = "0 1";
-      const instruction = "F";
-      it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
-        expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-          `${expectedLocation} ${orientation}`
-        );
+
+      describe("and a valid start location (0 0) orientation cardinal (N)", () => {
+        const orientation = "N";
+        const location = "0 0";
+        const state = `${location} ${orientation}`;
+        const expectedLocation = "0 1";
+        const instruction = "F";
+
+        it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
+          expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+            `${expectedLocation} ${orientation}`
+          );
+        });
+      });
+
+      describe("and a valid start location (0 1) orientation cardinal (S)", () => {
+        const orientation = "S";
+        const location = "0 1";
+        const state = `${location} ${orientation}`;
+        const expectedLocation = "0 0";
+        const instruction = "F";
+
+        it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
+          expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+            `${expectedLocation} ${orientation}`
+          );
+        });
       });
     });
   });
