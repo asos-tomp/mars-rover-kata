@@ -144,8 +144,10 @@ describe("Mars Rover", () => {
     const robots = [
       { state: "1 1 E", instructions: "RFRFRFRF" },
       { state: "3 2 N", instructions: "FRRFLLFFRRFLL" },
+      { state: "0 3 W", instructions: "LLFFFLFLFL" },
     ];
-    const expectations = ["1 1 E", "3 3 N LOST"];
+    const expectations = ["1 1 E", "3 3 N LOST", "2 3 S"];
+
     const stateDescription = robots
       .map(
         ({ state, instructions }) =>
