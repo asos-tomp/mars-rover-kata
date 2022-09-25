@@ -11,8 +11,24 @@ const leftCommand = (state) => rotate(state, -1);
 
 const rightCommand = (state) => rotate(state, 1);
 
-const forwardCommand = (state) => {
-  state.isLost = true;
+const forwardCommand = (state, world) => {
+  const matrix = {
+    N: [0, 1],
+    E: [1, 0],
+    S: [0, -1],
+    W: [-1, 0],
+  };
+  const {
+    orientation,
+    location: [x, y],
+  } = state;
+  const [deltaX, deltaY] = matrix[orientation];
+  const newX = x + deltaX;
+  const newY = y + deltaY;
+  state.isLost = newX < 0 || newY < 0 || newX > world.right || newY > world.top;
+  if (!state.isLost) {
+    state.location = [newX, newY];
+  }
 };
 
 const commandFactory = (instruction) => {
@@ -24,38 +40,46 @@ const commandFactory = (instruction) => {
   return commandMap[instruction];
 };
 
-const process = (state, instructions) => {
+const process = (state, instructions, world) => {
   const [instruction, ...remaining] = instructions;
   if (!instruction) {
     return state;
   }
   const command = commandFactory(instruction);
-  command(state);
+  command(state, world);
 
-  return process(state, remaining);
+  return process(state, remaining, world);
+};
+
+const coordinateFactory = (input) => {
+  const coords = input.split(" ").map((coord) => (coord === "0" ? 0 : 1));
+  return coords;
 };
 
 const stateFactory = (input) => {
   const state = {
+    location: coordinateFactory(input.slice(0, -2)),
     orientation: input.slice(-1),
     isLost: false,
-    toString: () => `0 0 ${state.orientation}${state.isLost ? " LOST" : ""}`,
+    toString: () =>
+      `${state.location.join(" ")} ${state.orientation}${
+        state.isLost ? " LOST" : ""
+      }`,
   };
   return state;
 };
 
+const worldFactory = (input) => {
+  const [right, top] = coordinateFactory(input);
+  return { right, top };
+};
+
 export default (input) => {
   const [worldGridTopRight, inputState, instructions = ""] = input.split("\n");
+  const world = worldFactory(worldGridTopRight);
   const state = stateFactory(inputState);
 
-  if (worldGridTopRight !== "0 0") {
-    const worldGridOrientationMap = {
-      "0 1": state.orientation === "S" ? "0 0 S" : "0 1 N",
-      "1 0": state.orientation === "W" ? "0 0 W" : "1 0 E",
-    };
-    return worldGridOrientationMap[worldGridTopRight];
-  }
+  process(state, instructions, world);
 
-  process(state, instructions);
   return state.toString();
 };
