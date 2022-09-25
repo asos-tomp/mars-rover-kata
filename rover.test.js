@@ -119,5 +119,23 @@ describe("Mars Rover", () => {
         }
       );
     });
+
+    describe("and a world with dimensions (5 3)", () => {
+      const world = "5 3";
+
+      describe.each`
+        state      | instructions  | expectation
+        ${"1 1 E"} | ${"RFRFRFRF"} | ${"1 1 E"}
+      `(
+        "and a valid start state ($state) and instructions ($instructions)",
+        ({ state, instructions, expectation }) => {
+          it(`should return a new state (${expectation})`, () => {
+            expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
+              expectation
+            );
+          });
+        }
+      );
+    });
   });
 });
