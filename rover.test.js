@@ -9,27 +9,23 @@ describe("Mars Rover", () => {
     expect(rover).toBeInstanceOf(Function);
   });
 
-  describe("given a minimum viable world (single unit size), a single robot with a valid start location (0,0) and orientation cardinal (N), and no moves", () => {
-    const origin = "0 0";
-    const world = `${origin}`;
-    const location = `${origin}`;
-    const orientation = "N";
+  describe("given a single robot, a minimum viable world (single unit size), a valid start location (0 0)", () => {
+    describe.each`
+      orientation
+      ${"N"}
+      ${"E"}
+    `(
+      "and orientation cardinal ($orientation), and no instructions",
+      ({ orientation }) => {
+        const origin = "0 0";
+        const world = `${origin}`;
+        const location = `${origin}`;
+        const state = `${location} ${orientation}`;
 
-    it("should return the starting state unchanged", () => {
-      const state = `${location} ${orientation}`;
-      expect(rover(`${world}\n${state}`)).toEqual(state);
-    });
-  });
-
-  describe("given a minimum viable world (single unit size), a single robot with a valid start location (0,0) and orientation cardinal (E), and no moves", () => {
-    const origin = "0 0";
-    const world = `${origin}`;
-    const location = `${origin}`;
-    const orientation = "E";
-
-    it("should return the starting state unchanged", () => {
-      const state = `${location} ${orientation}`;
-      expect(rover(`${world}\n${state}`)).toEqual(state);
-    });
+        it("should return the starting state unchanged", () => {
+          expect(rover(`${world}\n${state}`)).toEqual(state);
+        });
+      }
+    );
   });
 });
