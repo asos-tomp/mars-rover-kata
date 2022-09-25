@@ -2,8 +2,13 @@ export default (input) => {
   const [, state, command] = input.split("\n");
 
   if (command) {
-    if (state === "0 0 N") return "0 0 E";
-    return "0 0 S";
+    const cardinals = ["N", "E", "S", "W"];
+    const startOrientation = state.slice(-1);
+    const startOrientationIndex = cardinals.indexOf(startOrientation);
+    const newOrientation =
+      cardinals[(startOrientationIndex + 1) % cardinals.length];
+
+    return `0 0 ${newOrientation}`;
   }
 
   return state;
