@@ -124,8 +124,9 @@ describe("Mars Rover", () => {
       const world = "5 3";
 
       describe.each`
-        state      | instructions  | expectation
-        ${"1 1 E"} | ${"RFRFRFRF"} | ${"1 1 E"}
+        state      | instructions       | expectation
+        ${"1 1 E"} | ${"RFRFRFRF"}      | ${"1 1 E"}
+        ${"3 2 N"} | ${"FRRFLLFFRRFLL"} | ${"3 3 N LOST"}
       `(
         "and a valid start state ($state) and instructions ($instructions)",
         ({ state, instructions, expectation }) => {
