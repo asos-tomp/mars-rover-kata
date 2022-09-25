@@ -104,6 +104,8 @@ describe("Mars Rover", () => {
         ${"0 1"} | ${"0 1"} | ${"S"}      | ${"0 0"}
         ${"1 0"} | ${"0 0"} | ${"E"}      | ${"1 0"}
         ${"1 0"} | ${"1 0"} | ${"W"}      | ${"0 0"}
+        ${"0 2"} | ${"0 2"} | ${"S"}      | ${"0 1"}
+        ${"3 0"} | ${"3 0"} | ${"W"}      | ${"2 0"}
       `(
         "and a world with dimensions ($world), a valid start location ($location) and orientation cardinal ($orientation)",
         ({ world, location, orientation, expectedLocation }) => {
