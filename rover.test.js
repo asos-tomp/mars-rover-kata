@@ -50,7 +50,6 @@ describe("Mars Rover", () => {
 
         describe.each`
           location
-          ${"0 0"}
           ${`${right} 0`}
           ${`0 ${top}`}
         `("with a valid start location ($location)", ({ location }) => {
@@ -106,6 +105,23 @@ describe("Mars Rover", () => {
                   );
                 });
               }
+            );
+          });
+        });
+
+        describe.each`
+          location
+          ${"0 0"}
+          ${`${right + 1} 0`}
+          ${`0 ${top + 1}`}
+          ${`-1 0`}
+          ${`0 -1`}
+        `("with an invalid start location ($location)", ({ location }) => {
+          const state = `${location} N`;
+
+          it(`should throw an exception indicating that the coordinate is outside of accepted bounds`, () => {
+            expect(() => rover(`${world}\n${state}`)).toThrow(
+              `invalid start location ${location} received`
             );
           });
         });
