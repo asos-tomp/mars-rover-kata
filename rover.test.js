@@ -111,7 +111,6 @@ describe("Mars Rover", () => {
 
         describe.each`
           location
-          ${"0 0"}
           ${`${right + 1} 0`}
           ${`0 ${top + 1}`}
           ${`-1 0`}
@@ -156,7 +155,7 @@ describe("Mars Rover", () => {
         }
       );
 
-      describe("and a world with with top right coordinate of (5 3)", () => {
+      describe("and a world with with right top coordinate of (5 3)", () => {
         const world = "5 3";
 
         describe.each`
@@ -204,7 +203,7 @@ describe("Mars Rover", () => {
       )
       .join(" and ");
 
-    describe(`with ${stateDescription} and a world with top right coordinate of (5 3)`, () => {
+    describe(`with ${stateDescription} and a world with right top coordinate of (5 3)`, () => {
       const world = "5 3";
       const formatRobot = ({ state, instructions }) =>
         `${state}\n${instructions}`;
