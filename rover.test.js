@@ -14,6 +14,8 @@ describe("Mars Rover", () => {
       orientation
       ${"N"}
       ${"E"}
+      ${"S"}
+      ${"W"}
     `(
       "and orientation cardinal ($orientation), and no instructions",
       ({ orientation }) => {
