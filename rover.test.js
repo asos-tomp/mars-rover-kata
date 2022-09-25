@@ -29,37 +29,22 @@ describe("Mars Rover", () => {
         });
       });
 
-      describe("and a right rotation instruction", () => {
-        const instruction = "R";
-        const expectedOrientation = {
-          N: "E",
-          E: "S",
-          S: "W",
-          W: "N",
-        }[orientation];
+      describe.each`
+        instruction | orientationMap
+        ${"R"}      | ${{ N: "E", E: "S", S: "W", W: "N" }}
+        ${"L"}      | ${{ N: "W", E: "N", S: "E", W: "S" }}
+      `(
+        "and rotation instruction ($instruction)",
+        ({ instruction, orientationMap }) => {
+          const expectedOrientation = orientationMap[orientation];
 
-        it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
-          expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-            `${location} ${expectedOrientation}`
-          );
-        });
-      });
-
-      describe("and a left rotation instruction", () => {
-        const instruction = "L";
-        const expectedOrientation = {
-          N: "W",
-          E: "N",
-          S: "E",
-          W: "S",
-        }[orientation];
-
-        it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
-          expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-            `${location} ${expectedOrientation}`
-          );
-        });
-      });
+          it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
+            expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+              `${location} ${expectedOrientation}`
+            );
+          });
+        }
+      );
     });
   });
 });
