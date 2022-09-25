@@ -1,0 +1,13 @@
+{
+  "name": "mars-rover-kata",
+  "version": "1.0.0",
+  "description": "Mars Rover Kata",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "dependencies": {
+    "jest": "^29.0.3"
+  }
+}
