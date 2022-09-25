@@ -1,13 +1,14 @@
 import { worldFactory } from "./worldFactory";
-import { initialStateFactory } from "./initialStateFactory";
-import { process } from "./process";
+import { robotsFactory } from "./robotsFactory";
 
 export default (input) => {
-  const [worldGridTopRight, inputState, instructions = ""] = input.split("\n");
+  const [worldGridTopRight, ...rest] = input.split("\n");
+
   const world = worldFactory(worldGridTopRight);
-  const state = initialStateFactory(inputState);
+  const robots = robotsFactory(rest, world);
+  robots.forEach(({ process }) => process());
 
-  process(state, instructions, world);
+  const output = robots.map(({ toString }) => toString()).join("\n");
 
-  return state.toString();
+  return output;
 };
