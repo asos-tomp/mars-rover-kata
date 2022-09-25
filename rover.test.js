@@ -52,6 +52,8 @@ describe("Mars Rover", () => {
         ${"L"}      | ${1}      | ${{ N: "W", E: "N", S: "E", W: "S" }}
         ${"R"}      | ${2}      | ${{ N: "S", E: "W", S: "N", W: "E" }}
         ${"L"}      | ${2}      | ${{ N: "S", E: "W", S: "N", W: "E" }}
+        ${"R"}      | ${3}      | ${{ N: "W", E: "N", S: "E", W: "S" }}
+        ${"L"}      | ${3}      | ${{ N: "E", E: "S", S: "W", W: "N" }}
       `(
         "and $rotations $instruction rotation instruction(s)",
         ({ instruction, rotations, orientationMap }) => {
