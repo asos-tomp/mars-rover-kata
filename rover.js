@@ -1,5 +1,7 @@
 export default (input) => {
-  const [, state] = input.split("\n");
+  const [, state, command] = input.split("\n");
+
+  if (command) return "0 0 E";
 
   return state;
 };
