@@ -52,7 +52,8 @@ const process = (state, instructions, world) => {
 };
 
 const coordinateFactory = (input) => {
-  const coords = input.split(" ").map((coord) => (coord === "0" ? 0 : 1));
+  const coords = input.split(" ").map((coord) => parseInt(coord));
+
   return coords;
 };
 
