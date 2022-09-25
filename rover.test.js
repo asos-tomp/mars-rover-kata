@@ -81,15 +81,23 @@ describe("Mars Rover", () => {
         });
       });
 
-      describe("and an invalid world width (51 0)", () => {
-        const width = 51;
+      describe.each`
+        width | isValid
+        ${51} | ${false}
+        ${50} | ${true}
+        ${-1} | ${false}
+      `("and a world width ($width)", ({ width, isValid }) => {
         const world = `${width} 0`;
         const state = `${location} N`;
 
-        it(`should throw an exception indicating that the coordinate is outside of accepted bounds`, () => {
-          expect(() => rover(`${world}\n${state}`)).toThrow(
-            `invalid world width ${width} received`
-          );
+        const expectation = isValid ? "not " : "";
+
+        it(`should ${expectation}throw an exception indicating that the coordinate is outside of accepted bounds`, () => {
+          let expectation = expect(() => rover(`${world}\n${state}`));
+          if (isValid) {
+            expectation = expectation.not;
+          }
+          expectation.toThrow(`invalid world width ${width} received`);
         });
       });
 
