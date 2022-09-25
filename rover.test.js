@@ -148,6 +148,7 @@ describe("Mars Rover", () => {
       { state: "0 3 N", instructions: "F" },
       { state: "1 0 S", instructions: "F" },
       { state: "5 1 E", instructions: "F" },
+      { state: "0 3 N", instructions: "F" },
     ];
     const expectations = [
       "1 1 E",
@@ -156,6 +157,7 @@ describe("Mars Rover", () => {
       "0 3 N LOST",
       "1 0 S LOST",
       "5 1 E LOST",
+      "0 3 N",
     ];
 
     const stateDescription = robots
