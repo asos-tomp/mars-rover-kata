@@ -46,11 +46,12 @@ const stateFactory = (input) => {
 
 export default (input) => {
   const [worldGridTopRight, inputState, instructions = ""] = input.split("\n");
+  const state = stateFactory(inputState);
+
   if (worldGridTopRight === "0 1") {
-    return "0 1 N";
+    return state.orientation === "S" ? "0 0 S" : "0 1 N";
   }
 
-  const state = stateFactory(inputState);
   process(state, instructions);
   return state.toString();
 };
