@@ -56,6 +56,7 @@ describe("Mars Rover", () => {
         ${"LLL"}
         ${"LR"}
         ${"RL"}
+        ${"RLR"}
       `("and instructions $instructions", ({ instructions }) => {
         const cardinals = ["N", "E", "S", "W"];
         let orientationIndex = cardinals.indexOf(orientation);
