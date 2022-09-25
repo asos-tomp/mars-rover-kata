@@ -12,8 +12,16 @@ export const forwardCommand = (state, world) => {
   const [deltaX, deltaY] = matrix[orientation];
   const newX = x + deltaX;
   const newY = y + deltaY;
-  state.isLost = newX < 0 || newY < 0 || newX > world.right || newY > world.top;
-  if (!state.isLost) {
-    state.location = [newX, newY];
+  const wouldBeLost =
+    newX < 0 || newY < 0 || newX > world.right || newY > world.top;
+
+  if (wouldBeLost) {
+    if (!world.isLost) {
+      state.isLost = true;
+    }
+    world.isLost = true;
+    return;
   }
+
+  state.location = [newX, newY];
 };
