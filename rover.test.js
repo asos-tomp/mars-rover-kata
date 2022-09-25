@@ -9,86 +9,101 @@ describe("Mars Rover", () => {
     expect(rover).toBeInstanceOf(Function);
   });
 
-  describe("given a single robot, a minimum viable world (single unit size), a valid start location (0 0)", () => {
+  describe("given a single robot with a valid start location (0 0)", () => {
     const origin = "0 0";
-    const world = `${origin}`;
     const location = `${origin}`;
 
-    describe.each`
-      orientation
-      ${"N"}
-      ${"E"}
-      ${"S"}
-      ${"W"}
-    `("and orientation cardinal ($orientation)", ({ orientation }) => {
-      const state = `${location} ${orientation}`;
-
-      describe("and no instructions", () => {
-        it(`should return the starting state ${state} unchanged`, () => {
-          expect(rover(`${world}\n${state}`)).toEqual(state);
-        });
-      });
-
+    describe("and a minimum viable world (single unit size)", () => {
+      const world = `${origin}`;
       describe.each`
-        instruction | orientationMap
-        ${"R"}      | ${{ N: "E", E: "S", S: "W", W: "N" }}
-        ${"L"}      | ${{ N: "W", E: "N", S: "E", W: "S" }}
-      `(
-        "and rotation instruction ($instruction)",
-        ({ instruction, orientationMap }) => {
-          const expectedOrientation = orientationMap[orientation];
+        orientation
+        ${"N"}
+        ${"E"}
+        ${"S"}
+        ${"W"}
+      `("and orientation cardinal ($orientation)", ({ orientation }) => {
+        const state = `${location} ${orientation}`;
 
+        describe("and no instructions", () => {
+          it(`should return the starting state ${state} unchanged`, () => {
+            expect(rover(`${world}\n${state}`)).toEqual(state);
+          });
+        });
+
+        describe.each`
+          instruction | orientationMap
+          ${"R"}      | ${{ N: "E", E: "S", S: "W", W: "N" }}
+          ${"L"}      | ${{ N: "W", E: "N", S: "E", W: "S" }}
+        `(
+          "and rotation instruction ($instruction)",
+          ({ instruction, orientationMap }) => {
+            const expectedOrientation = orientationMap[orientation];
+
+            it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
+              expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+                `${location} ${expectedOrientation}`
+              );
+            });
+          }
+        );
+
+        describe.each`
+          instructions
+          ${"R"}
+          ${"L"}
+          ${"RR"}
+          ${"LL"}
+          ${"RRR"}
+          ${"LLL"}
+          ${"LR"}
+          ${"RL"}
+          ${"RLR"}
+        `("and instructions $instructions", ({ instructions }) => {
+          const cardinals = ["N", "E", "S", "W"];
+          let orientationIndex = cardinals.indexOf(orientation);
+
+          instructions.split("").forEach((instruction) => {
+            const instructionDeltaMap = {
+              L: -1,
+              R: 1,
+            };
+            const modulo = (n, m) => ((n % m) + m) % m;
+            orientationIndex = modulo(
+              orientationIndex + instructionDeltaMap[instruction],
+              4
+            );
+          });
+
+          const expectedOrientation = cardinals[orientationIndex];
           it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
-            expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+            expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
               `${location} ${expectedOrientation}`
             );
           });
-        }
-      );
-
-      describe.each`
-        instructions
-        ${"R"}
-        ${"L"}
-        ${"RR"}
-        ${"LL"}
-        ${"RRR"}
-        ${"LLL"}
-        ${"LR"}
-        ${"RL"}
-        ${"RLR"}
-      `("and instructions $instructions", ({ instructions }) => {
-        const cardinals = ["N", "E", "S", "W"];
-        let orientationIndex = cardinals.indexOf(orientation);
-
-        instructions.split("").forEach((instruction) => {
-          const instructionDeltaMap = {
-            L: -1,
-            R: 1,
-          };
-          const modulo = (n, m) => ((n % m) + m) % m;
-          orientationIndex = modulo(
-            orientationIndex + instructionDeltaMap[instruction],
-            4
-          );
         });
 
-        const expectedOrientation = cardinals[orientationIndex];
-        it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
-          expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
-            `${location} ${expectedOrientation}`
-          );
+        describe("and a forward instruction (F)", () => {
+          const instruction = "F";
+
+          it(`should return the starting location with an indication that the robot is lost`, () => {
+            expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+              `${state} LOST`
+            );
+          });
         });
       });
+    });
 
-      describe("and a forward instruction (F)", () => {
-        const instruction = "F";
-
-        it(`should return the starting location with an indication that the robot is lost`, () => {
-          expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
-            `${state} LOST`
-          );
-        });
+    describe("and a world with two units height and one width and orientation cardinal (N) and a forward instruction", () => {
+      const world = "0 1";
+      const orientation = "N";
+      const state = `${location} ${orientation}`;
+      const expectedLocation = "0 1";
+      const instruction = "F";
+      it(`should return a new state (${expectedLocation} ${orientation}) and no indication that the robot is lost`, () => {
+        expect(rover(`${world}\n${state}\n${instruction}`)).toEqual(
+          `${expectedLocation} ${orientation}`
+        );
       });
     });
   });
