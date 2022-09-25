@@ -42,7 +42,7 @@ const commandFactory = (instruction) => {
 
 const process = (state, instructions, world) => {
   const [instruction, ...remaining] = instructions;
-  if (!instruction) {
+  if (!instruction || state.isLost) {
     return state;
   }
   const command = commandFactory(instruction);
