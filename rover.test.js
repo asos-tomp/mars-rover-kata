@@ -46,31 +46,26 @@ describe("Mars Rover", () => {
         }
       );
 
-      describe("and two right rotation instructions (RR)", () => {
-        const instructions = "RR";
-        const orientationMap = { N: "S", E: "W", S: "N", W: "E" };
-        const expectedOrientation = orientationMap[orientation];
-        const state = `${location} ${orientation}`;
+      describe.each`
+        instruction | rotations | orientationMap
+        ${"R"}      | ${1}      | ${{ N: "E", E: "S", S: "W", W: "N" }}
+        ${"L"}      | ${1}      | ${{ N: "W", E: "N", S: "E", W: "S" }}
+        ${"R"}      | ${2}      | ${{ N: "S", E: "W", S: "N", W: "E" }}
+        ${"L"}      | ${2}      | ${{ N: "S", E: "W", S: "N", W: "E" }}
+      `(
+        "and $rotations $instruction rotation instruction(s)",
+        ({ instruction, rotations, orientationMap }) => {
+          const instructions = instruction.repeat(rotations);
+          const expectedOrientation = orientationMap[orientation];
+          const state = `${location} ${orientation}`;
 
-        it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
-          expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
-            `${location} ${expectedOrientation}`
-          );
-        });
-      });
-
-      describe("and two right rotation instructions (LL)", () => {
-        const instructions = "LL";
-        const orientationMap = { N: "S", E: "W", S: "N", W: "E" };
-        const expectedOrientation = orientationMap[orientation];
-        const state = `${location} ${orientation}`;
-
-        it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
-          expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
-            `${location} ${expectedOrientation}`
-          );
-        });
-      });
+          it(`should return the starting location with an updated orientation (${expectedOrientation})`, () => {
+            expect(rover(`${world}\n${state}\n${instructions}`)).toEqual(
+              `${location} ${expectedOrientation}`
+            );
+          });
+        }
+      );
     });
   });
 });
