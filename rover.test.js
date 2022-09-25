@@ -20,4 +20,16 @@ describe("Mars Rover", () => {
       expect(rover(`${world}\n${state}`)).toEqual(state);
     });
   });
+
+  describe("given a minimum viable world (single unit size), a single robot with a valid start location (0,0) and orientation cardinal (E), and no moves", () => {
+    const origin = "0 0";
+    const world = `${origin}`;
+    const location = `${origin}`;
+    const orientation = "E";
+
+    it("should return the starting state unchanged", () => {
+      const state = `${location} ${orientation}`;
+      expect(rover(`${world}\n${state}`)).toEqual(state);
+    });
+  });
 });
