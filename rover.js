@@ -1,26 +1,39 @@
-export default (input) => {
-  const [, state, instructions] = input.split("\n");
+const rotate = (orientation, delta) => {
+  const cardinals = ["N", "E", "S", "W"];
+  const modulo = (n, m) => ((n % m) + m) % m;
+  return cardinals[
+    modulo(cardinals.indexOf(orientation) + delta, cardinals.length)
+  ];
+};
 
-  if (instructions) {
-    const cardinals = ["N", "E", "S", "W"];
+const leftCommand = (orientation) => rotate(orientation, -1);
 
-    const startOrientation = state.slice(-1);
-    let orientationIndex = cardinals.indexOf(startOrientation);
-    const instructionDeltaMap = {
-      L: -1,
-      R: 1,
-    };
-    const modulo = (n, m) => ((n % m) + m) % m;
-    instructions.split("").forEach((instruction) => {
-      orientationIndex = modulo(
-        orientationIndex + instructionDeltaMap[instruction],
-        4
-      );
-    });
-    const newOrientation = cardinals[orientationIndex];
+const rightCommand = (orientation) => rotate(orientation, 1);
 
-    return `0 0 ${newOrientation}`;
+const commandFactory = (instruction) => {
+  const commandMap = {
+    L: leftCommand,
+    R: rightCommand,
+  };
+  return commandMap[instruction];
+};
+
+const process = (orientation, instructions) => {
+  const [instruction, ...remaining] = instructions;
+  if (!instruction) {
+    return orientation;
   }
+  const command = commandFactory(instruction);
+  orientation = command(orientation);
 
-  return state;
+  return process(orientation, remaining);
+};
+
+export default (input) => {
+  const [, state, instructions = ""] = input.split("\n");
+
+  let orientation = state.slice(-1);
+  orientation = process(orientation, instructions);
+
+  return `0 0 ${orientation}`;
 };
