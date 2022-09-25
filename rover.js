@@ -48,8 +48,12 @@ export default (input) => {
   const [worldGridTopRight, inputState, instructions = ""] = input.split("\n");
   const state = stateFactory(inputState);
 
-  if (worldGridTopRight === "0 1") {
-    return state.orientation === "S" ? "0 0 S" : "0 1 N";
+  if (worldGridTopRight !== "0 0") {
+    const worldGridOrientationMap = {
+      "0 1": state.orientation === "S" ? "0 0 S" : "0 1 N",
+      "1 0": state.orientation === "W" ? "0 0 W" : "1 0 E",
+    };
+    return worldGridOrientationMap[worldGridTopRight];
   }
 
   process(state, instructions);
