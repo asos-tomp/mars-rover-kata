@@ -5,7 +5,7 @@ export const robotsFactory = (input, world, output = []) => {
     return output;
   }
 
-  const [inputState, instructions = "", _] = input.splice(0, 3);
+  const [inputState, instructions = ""] = input.splice(0, 3);
   output = [...output, robot({ inputState, instructions, world })];
 
   return robotsFactory(input, world, output);
