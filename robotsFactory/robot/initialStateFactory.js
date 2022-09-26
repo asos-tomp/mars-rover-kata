@@ -1,4 +1,4 @@
-import { coordinateFactory } from "../../../coordinateFactory";
+import { coordinateFactory } from "../../coordinateFactory";
 
 export const initialStateFactory = (input, { right, top }) => {
   let location;
