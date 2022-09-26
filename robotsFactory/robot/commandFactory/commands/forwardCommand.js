@@ -27,3 +27,5 @@ export const forwardCommand = (state, world) => {
 
   state.location = [newX, newY];
 };
+
+forwardCommand.instruction = "F";

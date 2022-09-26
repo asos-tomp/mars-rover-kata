@@ -1,10 +1,11 @@
-import { leftCommand, rightCommand, forwardCommand } from "./commands";
+import * as commands from "./commands";
 
-export const commandFactory = (instruction) => {
-  const commandMap = {
-    F: forwardCommand,
-    L: leftCommand,
-    R: rightCommand,
-  };
-  return commandMap[instruction];
-};
+const commandMap = Object.values(commands).reduce(
+  (map, command) => ({
+    ...map,
+    [command.instruction]: command,
+  }),
+  {}
+);
+
+export const commandFactory = (instruction) => commandMap[instruction];
